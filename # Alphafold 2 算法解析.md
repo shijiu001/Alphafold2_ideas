@@ -23,7 +23,21 @@ Alphafold 2是一个用于预测蛋白质3D结构的神经网络模型，该模�
 
 ### Alphafold 2框架概览
 
+![AF1](https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF1.png?raw=true)
 
+Alphafold 2主要实现的功能是从一个蛋白质的氨基酸序列预测蛋白质的3D结构，换句话说，该模型需要一个**输入：一条氨基酸序列**；并利用这一输入产生一个**输出：蛋白质的3D结构**`Fig. 1 绿色部分`。这个3D结构有如下两个特点：
+	分辨率是原子级别（即可以预测每个重原子所在的具体位置）
+	端到端3D结构预测（即肽链从N端到C端的完整结构都将被预测）
+	该3D结构仅属于一个肽链（即不能同时对complex中的各个结构进行预测）
+	该模型不从物理上考虑金属离子与蛋白的互作等（有趣的是，在经过大量结构的学习之后，Alphafold 2在一定程度上能够预测蛋白与金属离子的作用，即使该模型并不从物理相互作用上考虑这一特点）
+
+输入的这一条氨基酸序列通过在序列数据库中通过多序列比对（multiple sequence alignment, MSA）来查找同源序列，并进一步组建出**MSA representation**；同时，通过在结构数据库中查找同源区段以及Pairing的过程组建**Pair representation**。MSA representation携带有输入序列和其同源序列的同源信息（演化相关的信息）以及大量其他序列的feature；Pair representation携带有输入序列的任意两个氨基酸残基之间的相关性信息（初始状态）。`Fig. 1 蓝色部分`
+
+在这之后MSA representation以及Pair representation作为**Evoformer网络**的输入，在Evoformer网络中不断交换演化相关的信息和氨基酸残基之间的相关性信息，并最终输出一个经过若干次**更新（update）后的MSA representation和Pair representation**。`Fig. 1 橙色部分`
+
+从Evoformer网络中输出的MSA representation的第一行即为原始输入序列的信息；从Evoformer网络中输出的Pair representation中携带了更新后的任意氨基酸之间的相关性信息。上述两者作为**Structure module**的输入，在Stucture module中进行蛋白质结构的构建。`Fig. 1 紫色部分`，并最终输出预测得到的蛋白质中各重原子的3D结构以及各项评估参数（如，plDDT-Cα等）`Fig. 1 右侧绿色部分`
+
+从Evoformer网络中输出的MSA representation的第一行以及Pair representation同样还会再与蓝色部分所得相融合（embedding）再作为Evoformer的输入经历上述过程，这一机制被称为**Recycling**，将会进行3次Recycling。`Fig. 1 红色部分`
 
 ### Input embeddings
 

@@ -7,13 +7,13 @@
 > 本文主要针对Alphafold 2进行介绍，而非Alphafold。
 > 作者在学习相关文献*Highly accurate protein structure prediction with AlphaFold*及其补充材料后，根据作者对此模型的理解，总结成文。**必须强调的是，作者对人工智能以及蛋白结构领域的了解都较为浅薄，本文仅根据作者个人的理解总结成文，并不能保证内容的绝对正确，更不能用作学习Alphafold2模型的参考。**
 > 本文最重要的参考文献即为[*Highly accurate protein structure prediction with AlphaFold*](https://doi.org/10.1038/s41586-021-03819-2)。本文中若参考此文献则不再进行标注。
-> 本文的网页版详见此处[Alphafold 2 算法解析]()（贴网页）。
+> 本文的可编辑版详见此处[Alphafold 2 算法解析]()（贴网页）。
 
 ---
 
 ### 简介
 
-生命体中各种各样的生命过程大多由蛋白质参与完成，而对蛋白质的结构进行解析即使立足于当下的技术手段，依旧是一件具有挑战性的事情。经管如此，经过一代代结构生物学家的不懈努力，人们也已经通过实验的手段确定了超过100,000种独特蛋白质的结构，这为人工智能模型的构建提供了可行的训练数据。
+生命体中各种各样的生命过程大多由蛋白质参与完成，而对蛋白质的结构进行解析即使立足于当下的技术手段，依旧是一件具有挑战性的事情。经管如此，经过一代代结构生物学家的不懈努力，人们也已经通过实验的手段确定了超过100,000种独特蛋白质的结构，这为人工智能模型的构建提供了可行的训练数
 
 根据蛋白质的一级结构预测其三级结构，即根据蛋白质种的氨基酸序列预测蛋白质3D结构，一直是一个困难但重要的科学问题。对这一问题的解决主要有两种策略，一种策略基于物理相互作用，考虑原子-原子之间的相互作用，利用热力学和动力学模拟来进行蛋白质结构的预测，尽管这种接近”第一性计算“的策略在理论上非常有说服力，但大分子模拟的难度依旧太高；另一种策略基于生物演化过程，利用未知结构与已知结构的同源性和演化过程中的保守性，基于已知结构来预测未知结构，但这种方法依赖于同源序列的结构，但在大多数情况下，一个蛋白质的同源物的结构同样也是未知的。在Alphafold2出现之前，各种各样的预测方法给出的大多数预测准确性远低于实验所得结构的准确性。
 
@@ -37,15 +37,79 @@ Alphafold 2主要实现的功能是从一个蛋白质的氨基酸序列预测蛋
 
 从Evoformer网络中输出的MSA representation的第一行即为原始输入序列的信息；从Evoformer网络中输出的Pair representation中携带了更新后的任意氨基酸之间的相关性信息。上述两者作为**Structure module**的输入，在Stucture module中进行蛋白质结构的构建。`Fig. 1 紫色部分`，并最终输出预测得到的蛋白质中各重原子的3D结构以及各项评估参数（如，plDDT-Cα等）`Fig. 1 右侧绿色部分`
 
-从Evoformer网络中输出的MSA representation的第一行以及Pair representation同样还会再与蓝色部分所得相融合（embedding）再作为Evoformer的输入经历上述过程，这一机制被称为**Recycling**，将会进行3次Recycling。`Fig. 1 红色部分`
+从Evoformer网络中输出的MSA representation的第一行以及Pair representation同样还会再与蓝色部分所得相整合（embedding）再作为Evoformer的输入经历上述过程，这一机制被称为**Recycling**，将会进行3次Recycling。`Fig. 1 红色部分`
+
+---
 
 ### Input embeddings
 
+![AF2](https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF2.png?raw=true)
+
+正如上文所述，Alphafold 2需要首先组建MSA representation以及Pair representation，本节就先介绍MSA representation以及Pair representation如何组建以及集成了哪些特征。
+
+#### 首次组建MSA representation以及Pair representation
+
+模型运行伊始，尚未产生能够用于Recycling的数据，因此，首次组建MSA representation以及Pair representation的过程与之后Recycling中重新组建MSA representation以及Pair representation的过程略有不同。SFig. 1中红色部分展示了首次组建MSA representation以及Pair representation的过程。
+
+Alphafold 2首先会将输入的序列以及从数据库中查找到的诸多信息整合为6个重要的feature：target_feat, residue_index, msa_feat, extra_msa_feat, template_pair_feat, template_angle_feat。在得到上述的6个feature后，对其中三个进行一些列的线性变换（更严谨的讲，这里也经过了其他一些变换过程，这一过程本质就是初步的特征提取）并最终得到MSA representation以及Pair representation。
+
+> 具体每个feature中都整合了哪些信息在文章的[补充材料](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-021-03819-2/MediaObjects/41586_2021_3819_MOESM1_ESM.pdf)中有详细的解释。因其对后文的理解并不起关键作用，本文不再赘述这部分内容。
+
+值得一提的是，对于residue_index的处理使用了一个被称为”relpos“的函数，这个函数将每个氨基酸残基视为原点，将其前后分别32个氨基酸残基归入一个bin中，这意味着对于任意一个氨基酸残基而言，其被考虑的相互作用残基被限制在了前后32个残基以内，这大大降低了计算难度。
+
+> 这里并未直接阻止模型成功预测超过32个残基的”远距离相互作用“，因为这种相互作用依旧可以通过几个中间残基作为桥梁而得到建立。
+
+在组建MSA representation以及Pair representation之后，Alphafold会进一步将得到的template_pair_feat整合到Pair representation中；template_angle_feat整合到MSA representation中；将extra_msa_feat整合为一个extra_MSA representation。
+
+#### Recycling中的MSA representation以及Pair representation组建
+
+上文中已经提到，进行Recycling的数据包括Evoformer网络中输出的MSA representation的第一行以及Pair representation。此时，Alphafold会整合一套之前没有被整合在MSA representation中的同源序列得到一组新的MSA representation。这一过程可以认为是引入了新的同源序列信息，而之所以不在第一次组建MSA representation时就使用全部的同源序列，是因为那样的计算成本太高。
+
+MSA representation得到更新，Pair representation保持不变，此时只需要进行红色部分之外的其他部分的整合即可。
+
+---
+
 ### Evoformer blocks
 
-### Structure module
+![AF3](https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF3.png?raw=true)
+
+在得到了MSA representation以及Pair representation后，它们便会作为输入进入Evoformer网络。此网络的结构如Fig. 2a所示。Evoformer网络用来计算MSA representation和Pair representation。通过它们的不断更新，来充分交换MSA representation携带的进化信息给Pair representation。具体的说，信息的交换和更新主要是通过一系列的Attention层来完成的，下文将对Evoformer的过程进行介绍。
+
+> Attention机制是近年来自然语言处理领域广泛应用的一种机制，其核心思想是加权处理，对于当前的序列，根据其不同的重要程度，赋予不同的权重，以实现关注/处理更重要信息的能力。其中最重要的参数为：Query，Key，Value。其过程简单而言就是将Query和Key作用得到的attention权值作用到Value上，其中也可以进一步引入bias。
+
+![AF4](https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF4.png?raw=true)
+
+首先是**对MSA representation按行进行的self-attention**，在此过程中，利用Pair representation计算得到一个bias引入self-attention的过程。实现了两者之间的信息交换。按行进行的attention使得每个同源序列中重要的那部分序列得到凸显（我们知道MSA中引入的同源序列大概率只有部分片段同源，因此这一过程使得同源部分得到了凸显）。
+
+![AF5](https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF5.png?raw=true)
+
+然后是**对MSA representation按列进行的self-attention**。这一过程并未引入更多bias，实现了对同源序列相同位置的突变和保守的识别（我们知道MSA引入的同源序列在同一氨基酸位置处并非条条都同源，因此这一过程使得某一位置处同源的序列得到了凸显，当然，一些保守性突变也应该得到凸显）。
+
+![AF6](https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF6.png?raw=true)
+
+值得注意的是上述过程并未直接对原有的MSA representation进行更新，因此此时的空间以不同与之前，需要relu函数进行空间映射，这一步被称为**Transition**。
+
+> 上述过程与Transformer模型的前馈网络神似，猜想这就是Evoformer名称的由来吧。
+
+![AF7](https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF7.png?raw=true)
+
+接下来是一次比较关键的信息交换，利用**Transition**得到的MSA representation，对其中的每两列进行进行变换（改变其维度，提取其特征）张量积（outer product mean）在对其按列取均值（即对s所代表的维度取均值，参考图中标注的维度变化则容易理解），之后再进行一次线性变换得到一个氨基酸残基对之间的相关性信息。这一步充分的将MSA representation中携带的信息交换给了pair representation。这一步称为**Outer product mean**。
+
+![AF8](https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF8.png?raw=true)
+
+之后是Pair representation的更新，称为**Triangular multiplicative update**。其基本逻辑是，这个矩阵描述的是任意两个氨基酸残基之间的关系，这些关系不是毫无约束的。比如距离，距离关系不是自由的，应该满足比如三角不等式，相邻的三个边应该满足两边之和大于第三边。所以这里的Pair representation的更新使用了**Triangular multiplicative update**。对于每个边，都会接收到和他组成三角形的任意两个其他边带来的更新，分为内和外（"incoming" & "outgoing"）两个过程。
+
+之后是两层按行进行的**Triangular self-attention**，分别被称作“around starting node”和”around ending node“，和之前的"incoming" & "outgoing"的概念类似。按行进行self-attention，则可以再诸多氨基酸对的相互作用中找到较为重要的那些。
+
+再之后是一次**Transition**，这里的Transtion与之前提到的Transition几乎一样，不再赘述。
+
+上述过程就是一个Evoformer block，重复上述过程48次，我们就完成了Evoformer blocks的任务`Fig. 1e 橙色部分`.
 
 ### Recycling
+
+Evoformer网络最终输出的MSA representation的第一行以及Pair representation会进行Recycling，前文已经有过介绍，这里不再赘述。
+
+### Structure module
 
 ### Database
 

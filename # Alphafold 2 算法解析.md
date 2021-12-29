@@ -3,10 +3,15 @@
 ---
 
 > #### 写在前面
+> 
 > 本文中所述的“Alphafold 2”指Deepmind团队开发的一个用于预测蛋白质结构的一个神经网络模型，该模型在CASP14中展现出了碾压性的优势，并在CASP14结束后又经过一些调整，并发布（开源）于2021年7月。为区别于Deepmind团队在此前开发的另一个用于预测蛋白质结构的一个人工智能模型“Alphafold”，这里我们称之为“Alphafold 2”。
+> 
 > 本文主要针对Alphafold 2进行介绍，而非Alphafold。
+> 
 > 作者在学习相关文献*Highly accurate protein structure prediction with AlphaFold*及其补充材料后，根据作者对此模型的理解，总结成文。**必须强调的是，作者对人工智能以及蛋白结构领域的了解都较为浅薄，本文仅根据作者个人的理解总结成文，并不能保证内容的绝对正确，更不能用作学习Alphafold2模型的参考。**
+> 
 > 本文最重要的参考文献即为[*Highly accurate protein structure prediction with AlphaFold*](https://doi.org/10.1038/s41586-021-03819-2)。本文中若参考此文献则不再进行标注。
+> 
 > 本文的可编辑版详见此处[Alphafold 2 算法解析]()（贴网页）。
 
 ---
@@ -105,12 +110,36 @@ MSA representation得到更新，Pair representation保持不变，此时只需�
 
 上述过程就是一个Evoformer block，重复上述过程48次，我们就完成了Evoformer blocks的任务`Fig. 1e 橙色部分`.
 
+---
+
 ### Recycling
 
 Evoformer网络最终输出的MSA representation的第一行以及Pair representation会进行Recycling，前文已经有过介绍，这里不再赘述。
 
+---
+
 ### Structure module
 
-### Database
+![AF9](https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF9.png?raw=true)
 
-### Training schema
+上文中已经提到，Evoformer网络最终输出的MSA representation的第一行（被称为Single repr.）以及Pair representation会作为Structure module的输入进入这一模块。Structure module的主要功能是将蛋白质结构的抽象特征（即Sing repr.和Pair representation）映射成为具体的原子坐标。这一模块有8个共享权重的blocks。这一模块的主要输出有两个部分，一是蛋白质的3D结构，另一是对该预测结构的评价。
+
+Structure module对蛋白质结构的初始化被称为”黑洞初始化“（”black hole initialization“）,这种初始化方法将所有的氨基酸残基初始化在一点上（原点），并且都初始化为同一方向。值得注意的是，这一初始化是针对backbone而言的。
+
+> 所谓bockbone之预测结构中的骨架信息，也可以简单理解为由（氨基N-Cα-羧基C）构成的主链。backbone规定了每个氨基酸残基的位置及角度。
+
+![AF12](https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF12.png?raw=true)
+
+Single repr.，Pair representation，backbone作为**Invariant Point Attention Module (IPA)**的输入，在IPA中经过一系列Attention层的处理，产生一个被更新的Update.。这个过程中，Pair representation会计算产生一个bias被用于Attention，已经产生的backbone信息（这里主要针对第一次循环之后的部分，第一次进入IPA是，backbone信息是”黑洞初始化“的状态）也会经过Attention层处理。这些信息最终会整合成为一个被更新的Update。
+
+这个被更新的Update，在**Predict relative rotations and transtations**中用于更新backbone。这一更新过程通过预测各残基之间的旋转和平移来实现。特别地，在AlphaFold2模型中，旋转的表示使用四元数（quaternion）来完成，平移的表示使用向量来完成。
+
+> 值得注意的是，在AlphaFold2模型中，在预测时对会将每个氨基酸残基放在原点，然后预测其前后氨基酸的相对位置。因此为了还原整体的3D结构，就必须记录每个氨基酸残基为原点的坐标系向整体蛋白质的坐标系还原的欧几里得变换信息。这样做对于机器学习由巨大的好处，这使得机器学习得到的信息能够轻松的用于每个氨基酸残基上。
+
+![AF10](https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF10.png?raw=true)
+
+在backbone预测完成后，为预测每个原子所在的位置，还需要对侧链的扭转角进行预测。每个氨基酸残基的的原子可以表示为S _atom names_ = {N, Cα, C, O, Cβ, Cγ, Cγ1, Cγ2, . . . }，而其间的扭转角则表示为 S _torsion names_ = {ω, Φ, Ψ, χ1, χ2, χ3, χ4}。由于主链已经得到确定，因此ω和Φ将不会在这个过程中被改变。对其他扭转角的确定则基于ResNet预测和物理规律的规范。其中物理规律的规范主要通过计算损失（losses）以及在机器学习过程中引导梯度下降来完成。最后，为了解决剩余的一些和物理规律不符的点，模型中引入了Amber relaxation机制。这一机制将不符合物理规律的残基上的约束去除，并利用物理模型对其重新进行约束。
+
+最终Structure module会输出3D结构（算法上讲，3D结构用一个向量集表示），以及4项评估参数。
+
+---

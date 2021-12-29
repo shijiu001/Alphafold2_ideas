@@ -1,5 +1,7 @@
 # AlphaFold2 算法解析
 
+傅乾正
+
 ---
 
 > #### 写在前面
@@ -12,7 +14,7 @@
 > 
 > 本文最重要的参考文献即为[*Highly accurate protein structure prediction with AlphaFold*](https://doi.org/10.1038/s41586-021-03819-2)。本文中若参考此文献则不再进行标注。
 > 
-> 本文的可编辑版详见此处[AlphaFold2 算法解析]()（贴网页）。
+> 本文的网页版详见此处[AlphaFold2 算法解析](https://github.com/shijiu001/Alphafold2_ideas/blob/main/%23%20AlphaFold2%20%E7%AE%97%E6%B3%95%E8%A7%A3%E6%9E%90.md)，可编辑版详见此处[RawMD](https://github.com/shijiu001/Alphafold2_ideas/blob/main/%23%20AlphaFold2%20%E7%AE%97%E6%B3%95%E8%A7%A3%E6%9E%90.md?raw=true)
 
 ---
 

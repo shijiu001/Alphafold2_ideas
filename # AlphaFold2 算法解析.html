@@ -1,0 +1,602 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+
+<link href='https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; --title-bar-height:20px; }
+.mac-os-11 { --title-bar-height:28px; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; inset: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; tab-size: 4; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+.typora-export .task-list-item input { pointer-events: none; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; image-orientation: from-image; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-fences-adv-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  .typora-export #write { break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  .is-mac table { break-inside: avoid; }
+  .typora-export-show-outline .typora-export-sidebar { display: none; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.6; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+.md-expand mark .md-meta { opacity: 0.3 !important; }
+mark .md-meta { color: rgb(0, 0, 0); }
+@media print {
+  .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
+}
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-fences.md-fences-math { font-size: 1em; }
+.md-fences-advanced:not(.md-focus) { padding: 0px; white-space: nowrap; border: 0px; }
+.md-fences-advanced:not(.md-focus) { background: inherit; }
+.typora-export-show-outline .typora-export-content { max-width: 1440px; margin: auto; display: flex; flex-direction: row; }
+.typora-export-sidebar { width: 300px; font-size: 0.8rem; margin-top: 80px; margin-right: 18px; }
+.typora-export-show-outline #write { --webkit-flex:2; flex: 2 1 0%; }
+.typora-export-sidebar .outline-content { position: fixed; top: 0px; max-height: 100%; overflow: hidden auto; padding-bottom: 30px; padding-top: 60px; width: 300px; }
+@media screen and (max-width: 1024px) {
+  .typora-export-sidebar, .typora-export-sidebar .outline-content { width: 240px; }
+}
+@media screen and (max-width: 800px) {
+  .typora-export-sidebar { display: none; }
+}
+.outline-content li, .outline-content ul { margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; list-style: none; }
+.outline-content ul { margin-top: 0px; margin-bottom: 0px; }
+.outline-content strong { font-weight: 400; }
+.outline-expander { width: 1rem; height: 1.42857rem; position: relative; display: table-cell; vertical-align: middle; cursor: pointer; padding-left: 4px; }
+.outline-expander::before { content: ""; position: relative; font-family: Ionicons; display: inline-block; font-size: 8px; vertical-align: middle; }
+.outline-item { padding-top: 3px; padding-bottom: 3px; cursor: pointer; }
+.outline-expander:hover::before { content: ""; }
+.outline-h1 > .outline-item { padding-left: 0px; }
+.outline-h2 > .outline-item { padding-left: 1em; }
+.outline-h3 > .outline-item { padding-left: 2em; }
+.outline-h4 > .outline-item { padding-left: 3em; }
+.outline-h5 > .outline-item { padding-left: 4em; }
+.outline-h6 > .outline-item { padding-left: 5em; }
+.outline-label { cursor: pointer; display: table-cell; vertical-align: middle; text-decoration: none; color: inherit; }
+.outline-label:hover { text-decoration: underline; }
+.outline-item:hover { border-color: rgb(245, 245, 245); background-color: var(--item-hover-bg-color); }
+.outline-item:hover { margin-left: -28px; margin-right: -28px; border-left: 28px solid transparent; border-right: 28px solid transparent; }
+.outline-item-single .outline-expander::before, .outline-item-single .outline-expander:hover::before { display: none; }
+.outline-item-open > .outline-item > .outline-expander::before { content: ""; }
+.outline-children { display: none; }
+.info-panel-tab-wrapper { display: none; }
+.outline-item-open > .outline-children { display: block; }
+.typora-export .outline-item { padding-top: 1px; padding-bottom: 1px; }
+.typora-export .outline-item:hover { margin-right: -8px; border-right: 8px solid transparent; }
+.typora-export .outline-expander::before { content: "+"; font-family: inherit; top: -1px; }
+.typora-export .outline-expander:hover::before, .typora-export .outline-item-open > .outline-item > .outline-expander::before { content: "−"; }
+.typora-export-collapse-outline .outline-children { display: none; }
+.typora-export-collapse-outline .outline-item-open > .outline-children, .typora-export-no-collapse-outline .outline-children { display: block; }
+.typora-export-no-collapse-outline .outline-expander::before { content: "" !important; }
+.typora-export-show-outline .outline-item-active > .outline-item .outline-label { font-weight: 700; }
+.md-inline-math-container mjx-container { zoom: 0.95; }
+
+
+:root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+}
+
+@include-when-export url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+/* open-sans-regular - latin-ext_latin */
+  /* open-sans-italic - latin-ext_latin */
+    /* open-sans-700 - latin-ext_latin */
+    /* open-sans-700italic - latin-ext_latin */
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: "Open Sans","Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+}
+
+#write {
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
+}
+
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1024px;
+	}
+}
+
+@media only screen and (min-width: 1800px) {
+	#write {
+		max-width: 1200px;
+	}
+}
+
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
+}
+
+a {
+    color: #4183C4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+
+/*@media print {
+    .typora-export h1,
+    .typora-export h2 {
+        border-bottom: none;
+        padding-bottom: initial;
+    }
+
+    .typora-export h1::after,
+    .typora-export h2::after {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-top: -96px;
+        border-top: 1px solid #eee;
+    }
+}*/
+
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n),
+thead {
+    background-color: #f8f8f8;
+}
+table th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    margin: 0;
+    padding: 6px 13px;
+}
+table td {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 6px 13px;
+}
+table th:first-child,
+table td:first-child {
+    margin-top: 0;
+}
+table th:last-child,
+table td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-lines {
+    padding-left: 4px;
+}
+
+.code-tooltip {
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
+}
+
+.md-fences {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+
+.md-task-list-item > input {
+  margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
+    pre {
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+/*.html-for-mac {
+    --item-hover-bg-color: #E6F0FE;
+}*/
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+    opacity: 0.4;
+}
+
+.ty-preferences .window-content {
+    background-color: #fafafa;
+}
+
+.ty-preferences .nav-group-item.active {
+    color: white;
+    background: #999;
+}
+
+.menu-item-container a.menu-style-btn {
+    background-color: #f5f8fa;
+    background-image: linear-gradient( 180deg , hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0)); 
+}
+
+
+
+</style><title># AlphaFold2 算法解析</title>
+</head>
+<body class='typora-export os-windows'><div class='typora-export-content'>
+<div id='write'  class=''><h1 id='alphafold2-算法解析'><span>AlphaFold2 算法解析</span></h1><p><span>傅乾正</span></p><hr /><blockquote><h4 id='写在前面'><span>写在前面</span></h4><p><span>本文中所述的“AlphaFold2”指Deepmind团队开发的一个用于预测蛋白质结构的一个神经网络模型，该模型在CASP14中展现出了碾压性的优势，并在CASP14结束后又经过一些调整，并发布（开源）于2021年7月。为区别于Deepmind团队在此前开发的另一个用于预测蛋白质结构的一个人工智能模型“AlphaFold”，这里我们称之为“AlphaFold2”。</span></p><p><span>本文主要针对AlphaFold2进行介绍，而非Alphafold。</span></p><p><span>作者在学习相关文献</span><em><span>Highly accurate protein structure prediction with AlphaFold</span></em><span>及其补充材料后，根据作者对此模型的理解，总结成文。</span><strong><span>必须强调的是，作者对人工智能以及蛋白结构领域的了解都较为浅薄，本文仅根据作者个人的理解总结成文，并不能保证内容的绝对正确，更不能用作学习Alphafold2模型的参考。</span></strong></p><p><span>本文最重要的参考文献即为</span><a href='https://doi.org/10.1038/s41586-021-03819-2'><em><span>Highly accurate protein structure prediction with AlphaFold</span></em></a><span>。本文中若参考此文献则不再进行标注。</span></p><p><span>本文的网页版详见此处</span><a href='https://github.com/shijiu001/Alphafold2_ideas/blob/main/%23%20AlphaFold2%20%E7%AE%97%E6%B3%95%E8%A7%A3%E6%9E%90.md'><span>AlphaFold2 算法解析</span></a><span>，可编辑版详见此处</span><a href='https://github.com/shijiu001/Alphafold2_ideas/blob/main/%23%20AlphaFold2%20%E7%AE%97%E6%B3%95%E8%A7%A3%E6%9E%90.md?raw=true'><span>RawMD</span></a></p></blockquote><hr /><h3 id='简介'><span>简介</span></h3><p><span>生命体中各种各样的生命过程大多由蛋白质参与完成，而对蛋白质的结构进行解析即使立足于当下的技术手段，依旧是一件具有挑战性的事情。经管如此，经过一代代结构生物学家的不懈努力，人们也已经通过实验的手段确定了超过100,000种独特蛋白质的结构，这为人工智能模型的构建提供了可行的训练数</span></p><p><span>根据蛋白质的一级结构预测其三级结构，即根据蛋白质种的氨基酸序列预测蛋白质3D结构，一直是一个困难但重要的科学问题。对这一问题的解决主要有两种策略，一种策略基于物理相互作用，考虑原子-原子之间的相互作用，利用热力学和动力学模拟来进行蛋白质结构的预测，尽管这种接近”第一性计算“的策略在理论上非常有说服力，但大分子模拟的难度依旧太高；另一种策略基于生物演化过程，利用未知结构与已知结构的同源性和演化过程中的保守性，基于已知结构来预测未知结构，但这种方法依赖于同源序列的结构，但在大多数情况下，一个蛋白质的同源物的结构同样也是未知的。在Alphafold2出现之前，各种各样的预测方法给出的大多数预测准确性远低于实验所得结构的准确性。</span></p><p><span>AlphaFold2是一个用于预测蛋白质3D结构的神经网络模型，该模型于2020年参加CASP14，并取得了惊人的结果。在 CASP14 中，AlphaFold2结构的骨架准确度中位数为 0.96 Å r.m.s.d.</span><sub><span>95</span></sub><span>（95% 残基覆盖率时的 Cα 均方根偏差）（95% 置信区间 = 0.85–1.16 Å）AlphaFold 的全原子精度为 1.5 Å r.m.s.d.</span><sub><span>95</span></sub><span>（95% 置信区间 = 1.2-1.6 Å）。这样的结果远比同时参加CASP14的其他方法优秀，甚至在一定程度上可以和实验解得的结构相媲美。</span></p><hr /><h3 id='alphafold2框架概览'><span>AlphaFold2框架概览</span></h3><p><img src="https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF1.png?raw=true" referrerpolicy="no-referrer" alt="AF1"></p><center style="font-size:14px;color:#C0C0C0;text-decoration:underline">Fig. 1e</center> <p><span>AlphaFold2主要实现的功能是从一个蛋白质的氨基酸序列预测蛋白质的3D结构，换句话说，该模型需要一个</span><strong><span>输入：一条氨基酸序列</span></strong><span>；并利用这一输入产生一个</span><strong><span>输出：蛋白质的3D结构</span></strong><code>Fig. 1e 绿色部分</code><span>。这个3D结构有如下两个特点：</span>
+<span>	</span><span>分辨率是原子级别（即可以预测每个重原子所在的具体位置）</span>
+<span>	</span><span>端到端3D结构预测（即肽链从N端到C端的完整结构都将被预测）</span>
+<span>	</span><span>该3D结构仅属于一个肽链（即不能同时对complex中的各个结构进行预测）</span>
+<span>	</span><span>该模型不从物理上考虑金属离子与蛋白的互作等（有趣的是，在经过大量结构的学习之后，AlphaFold2在一定程度上能够预测蛋白与金属离子的作用，即使该模型并不从物理相互作用上考虑这一特点）</span></p><p><span>输入的这一条氨基酸序列通过在序列数据库中通过多序列比对（multiple sequence alignment, MSA）来查找同源序列，并进一步组建出</span><strong><span>MSA representation</span></strong><span>；同时，通过在结构数据库中查找同源区段以及Pairing的过程组建</span><strong><span>Pair representation</span></strong><span>。MSA representation携带有输入序列和其同源序列的同源信息（演化相关的信息）以及大量其他序列的feature；Pair representation携带有输入序列的任意两个氨基酸残基之间的相关性信息（初始状态）。</span><code>Fig. 1e 蓝色部分</code></p><p><span>在这之后MSA representation以及Pair representation作为</span><strong><span>Evoformer网络</span></strong><span>的输入，在Evoformer网络中不断交换演化相关的信息和氨基酸残基之间的相关性信息，并最终输出一个经过若干次</span><strong><span>更新（update）后的MSA representation和Pair representation</span></strong><span>。</span><code>Fig. 1e 橙色部分</code></p><p><span>从Evoformer网络中输出的MSA representation的第一行即为原始输入序列的信息；从Evoformer网络中输出的Pair representation中携带了更新后的任意氨基酸之间的相关性信息。上述两者作为</span><strong><span>Structure module</span></strong><span>的输入，在Stucture module中进行蛋白质结构的构建。</span><code>Fig. 1e 紫色部分</code><span>，并最终输出预测得到的蛋白质中各重原子的3D结构以及各项评估参数（如，plDDT-Cα等）</span><code>Fig. 1e 右侧绿色部分</code></p><p><span>从Evoformer网络中输出的MSA representation的第一行以及Pair representation同样还会再与蓝色部分所得相整合（embedding）再作为Evoformer的输入经历上述过程，这一机制被称为</span><strong><span>Recycling</span></strong><span>，将会进行3次Recycling。</span><code>Fig. 1e 红色部分</code></p><hr /><h3 id='input-embeddings'><span>Input embeddings</span></h3><p><img src="https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF2.png?raw=true" referrerpolicy="no-referrer" alt="AF2"></p><center style="font-size:14px;color:#C0C0C0;text-decoration:underline">SFig. 1</center> <p><span>正如上文所述，AlphaFold2需要首先组建MSA representation以及Pair representation，本节就先介绍MSA representation以及Pair representation如何组建以及集成了哪些特征。</span></p><h4 id='首次组建msa-representation以及pair-representation'><span>首次组建MSA representation以及Pair representation</span></h4><p><span>模型运行伊始，尚未产生能够用于Recycling的数据，因此，首次组建MSA representation以及Pair representation的过程与之后Recycling中重新组建MSA representation以及Pair representation的过程略有不同。SFig. 1中红色部分展示了首次组建MSA representation以及Pair representation的过程。</span></p><p><span>AlphaFold2首先会将输入的序列以及从数据库中查找到的诸多信息整合为6个重要的feature：target_feat, residue_index, msa_feat, extra_msa_feat, template_pair_feat, template_angle_feat。在得到上述的6个feature后，对其中三个进行一些列的线性变换（更严谨的讲，这里也经过了其他一些变换过程，这一过程本质就是初步的特征提取）并最终得到MSA representation以及Pair representation。</span></p><blockquote><p><span>具体每个feature中都整合了哪些信息在文章的</span><a href='https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-021-03819-2/MediaObjects/41586_2021_3819_MOESM1_ESM.pdf'><span>补充材料</span></a><span>中有详细的解释。因其对后文的理解并不起关键作用，本文不再赘述这部分内容。</span></p></blockquote><p><span>值得一提的是，对于residue_index的处理使用了一个被称为”relpos“的函数，这个函数将每个氨基酸残基视为原点，将其前后分别32个氨基酸残基归入一个bin中，这意味着对于任意一个氨基酸残基而言，其被考虑的相互作用残基被限制在了前后32个残基以内，这大大降低了计算难度。</span></p><blockquote><p><span>这里并未直接阻止模型成功预测超过32个残基的”远距离相互作用“，因为这种相互作用依旧可以通过几个中间残基作为桥梁而得到建立。</span></p></blockquote><p><span>在组建MSA representation以及Pair representation之后，Alphafold会进一步将得到的template_pair_feat整合到Pair representation中；template_angle_feat整合到MSA representation中；将extra_msa_feat整合为一个extra_MSA representation。</span></p><h4 id='recycling中的msa-representation以及pair-representation组建'><span>Recycling中的MSA representation以及Pair representation组建</span></h4><p><span>上文中已经提到，进行Recycling的数据包括Evoformer网络中输出的MSA representation的第一行以及Pair representation。此时，Alphafold会整合一套之前没有被整合在MSA representation中的同源序列得到一组新的MSA representation。这一过程可以认为是引入了新的同源序列信息，而之所以不在第一次组建MSA representation时就使用全部的同源序列，是因为那样的计算成本太高。</span></p><p><span>MSA representation得到更新，Pair representation保持不变，此时只需要进行红色部分之外的其他部分的整合即可。</span></p><hr /><h3 id='evoformer-blocks'><span>Evoformer blocks</span></h3><p><img src="https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF3.png?raw=true" referrerpolicy="no-referrer" alt="AF3"></p><center style="font-size:14px;color:#C0C0C0;text-decoration:underline">Fig. 3a</center> <p><span>在得到了MSA representation以及Pair representation后，它们便会作为输入进入Evoformer网络。此网络的结构如Fig. 3a所示。Evoformer网络用来计算MSA representation和Pair representation。通过它们的不断更新，来充分交换MSA representation携带的进化信息给Pair representation。具体的说，信息的交换和更新主要是通过一系列的Attention层来完成的，下文将对Evoformer的过程进行介绍。</span></p><blockquote><p><span>Attention机制是近年来自然语言处理领域广泛应用的一种机制，其核心思想是加权处理，对于当前的序列，根据其不同的重要程度，赋予不同的权重，以实现关注/处理更重要信息的能力。其中最重要的参数为：Query，Key，Value。其过程简单而言就是将Query和Key作用得到的attention权值作用到Value上，其中也可以进一步引入bias。</span></p></blockquote><p><img src="https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF4.png?raw=true" referrerpolicy="no-referrer" alt="AF4"></p><center style="font-size:14px;color:#C0C0C0;text-decoration:underline">SFig. 2</center> <p><span>首先是</span><strong><span>对MSA representation按行进行的self-attention</span></strong><span>，在此过程中，利用Pair representation计算得到一个bias引入self-attention的过程。实现了两者之间的信息交换。按行进行的attention使得每个同源序列中重要的那部分序列得到凸显（我们知道MSA中引入的同源序列大概率只有部分片段同源，因此这一过程使得同源部分得到了凸显）。</span></p><p><img src="https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF5.png?raw=true" referrerpolicy="no-referrer" alt="AF5"></p><center style="font-size:14px;color:#C0C0C0;text-decoration:underline">SFig. 3</center> <p><span>然后是</span><strong><span>对MSA representation按列进行的self-attention</span></strong><span>。这一过程并未引入更多bias，实现了对同源序列相同位置的突变和保守的识别（我们知道MSA引入的同源序列在同一氨基酸位置处并非条条都同源，因此这一过程使得某一位置处同源的序列得到了凸显，当然，一些保守性突变也应该得到凸显）。</span></p><p><img src="https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF6.png?raw=true" referrerpolicy="no-referrer" alt="AF6"></p><center style="font-size:14px;color:#C0C0C0;text-decoration:underline">SFig. 4</center> <p><span>值得注意的是上述过程并未直接对原有的MSA representation进行更新，因此此时的空间以不同与之前，需要relu函数进行空间映射，这一步被称为</span><strong><span>Transition</span></strong><span>。</span></p><blockquote><p><span>上述过程与Transformer模型的前馈网络神似，猜想这就是Evoformer名称的由来吧。</span></p></blockquote><p><img src="https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF7.png?raw=true" referrerpolicy="no-referrer" alt="AF7"></p><p><span>接下来是一次比较关键的信息交换，利用</span><strong><span>Transition</span></strong><span>得到的MSA representation，对其中的每两列进行进行变换（改变其维度，提取其特征）张量积（outer product mean）在对其按列取均值（即对s所代表的维度取均值，参考图中标注的维度变化则容易理解），之后再进行一次线性变换得到一个氨基酸残基对之间的相关性信息。这一步充分的将MSA representation中携带的信息交换给了pair representation。这一步称为</span><strong><span>Outer product mean</span></strong><span>。</span></p><p><img src="https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF8.png?raw=true" referrerpolicy="no-referrer" alt="AF8"></p><center style="font-size:14px;color:#C0C0C0;text-decoration:underline">Fig. 3b, 3c</center> <p><span>之后是Pair representation的更新，称为</span><strong><span>Triangular multiplicative update</span></strong><span>。其基本逻辑是，这个矩阵描述的是任意两个氨基酸残基之间的关系，这些关系不是毫无约束的。比如距离，距离关系不是自由的，应该满足比如三角不等式，相邻的三个边应该满足两边之和大于第三边。所以这里的Pair representation的更新使用了</span><strong><span>Triangular multiplicative update</span></strong><span>。对于每个边，都会接收到和他组成三角形的任意两个其他边带来的更新，分为内和外（&quot;incoming&quot; &amp; &quot;outgoing&quot;）两个过程。</span></p><p><span>之后是两层按行进行的</span><strong><span>Triangular self-attention</span></strong><span>，分别被称作“around starting node”和”around ending node“，和之前的&quot;incoming&quot; &amp; &quot;outgoing&quot;的概念类似。按行进行self-attention，则可以再诸多氨基酸对的相互作用中找到较为重要的那些。</span></p><p><span>再之后是一次</span><strong><span>Transition</span></strong><span>，这里的Transtion与之前提到的Transition几乎一样，不再赘述。</span></p><p><span>上述过程就是一个Evoformer block，重复上述过程48次，我们就完成了Evoformer blocks的任务</span><code>Fig. 1e 橙色部分</code><span>.</span></p><hr /><h3 id='recycling'><span>Recycling</span></h3><p><span>Evoformer网络最终输出的MSA representation的第一行以及Pair representation会进行Recycling，前文已经有过介绍，这里不再赘述。</span></p><hr /><h3 id='structure-module'><span>Structure module</span></h3><p><img src="https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF9.png?raw=true" referrerpolicy="no-referrer" alt="AF9"></p><center style="font-size:14px;color:#C0C0C0;text-decoration:underline">Fig. 3d</center> <p><span>上文中已经提到，Evoformer网络最终输出的MSA representation的第一行（被称为Single repr.）以及Pair representation会作为Structure module的输入进入这一模块。Structure module的主要功能是将蛋白质结构的抽象特征（即Sing repr.和Pair representation）映射成为具体的原子坐标。这一模块有8个共享权重的blocks。这一模块的主要输出有两个部分，一是蛋白质的3D结构，另一是对该预测结构的评价。</span></p><p><span>Structure module对蛋白质结构的初始化被称为”黑洞初始化“（”black hole initialization“）,这种初始化方法将所有的氨基酸残基初始化在一点上（原点），并且都初始化为同一方向。值得注意的是，这一初始化是针对backbone而言的。</span></p><blockquote><p><span>所谓bockbone之预测结构中的骨架信息，也可以简单理解为由（氨基N-Cα-羧基C）构成的主链。backbone规定了每个氨基酸残基的位置及角度。</span></p></blockquote><p><img src="https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF12.png?raw=true" referrerpolicy="no-referrer" alt="AF12"></p><center style="font-size:14px;color:#C0C0C0;text-decoration:underline">SFig. 8</center> <p><span>Single repr.，Pair representation，backbone作为</span><strong><span>Invariant Point Attention Module (IPA)</span></strong><span>的输入，在IPA中经过一系列Attention层的处理，产生一个被更新的Update.。这个过程中，Pair representation会计算产生一个bias被用于Attention，已经产生的backbone信息（这里主要针对第一次循环之后的部分，第一次进入IPA是，backbone信息是”黑洞初始化“的状态）也会经过Attention层处理。这些信息最终会整合成为一个被更新的Update。</span></p><p><span>这个被更新的Update，在</span><strong><span>Predict relative rotations and transtations</span></strong><span>中用于更新backbone。这一更新过程通过预测各残基之间的旋转和平移来实现。特别地，在AlphaFold2模型中，旋转的表示使用四元数（quaternion）来完成，平移的表示使用向量来完成。</span></p><blockquote><p><span>值得注意的是，在AlphaFold2模型中，在预测时对会将每个氨基酸残基放在原点，然后预测其前后氨基酸的相对位置。因此为了还原整体的3D结构，就必须记录每个氨基酸残基为原点的坐标系向整体蛋白质的坐标系还原的欧几里得变换信息。这样做对于机器学习由巨大的好处，这使得机器学习得到的信息能够轻松的用于每个氨基酸残基上。</span></p></blockquote><p><img src="https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF10.png?raw=true" referrerpolicy="no-referrer" alt="AF10"></p><center style="font-size:14px;color:#C0C0C0;text-decoration:underline">Fig. 3e</center> <p><span>在backbone预测完成后，为预测每个原子所在的位置，还需要对侧链的扭转角进行预测。每个氨基酸残基的的原子可以表示为S</span><sub><span>atom names</span></sub><span> = {N, Cα, C, O, Cβ, Cγ, Cγ1, Cγ2, . . . }，而其间的扭转角则表示为 S</span><sub><span>torsion names</span></sub><span> = {ω, Φ, Ψ, χ1, χ2, χ3, χ4}。由于主链已经得到确定，因此ω和Φ将不会在这个过程中被改变。对其他扭转角的确定则基于ResNet预测和物理规律的规范。其中物理规律的规范主要通过计算损失（losses）以及在机器学习过程中引导梯度下降来完成。最后，为了解决剩余的一些和物理规律不符的点，模型中引入了Amber relaxation机制。这一机制将不符合物理规律的残基上的约束去除，并利用物理模型对其重新进行约束。</span></p><p><span>最终Structure module会输出3D结构（算法上讲，3D结构用一个向量集表示），以及4项评估参数。</span></p><hr /></div></div>
+</body>
+</html>

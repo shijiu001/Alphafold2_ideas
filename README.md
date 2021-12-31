@@ -1,1 +1,0 @@
-# Alphafold2_ideas

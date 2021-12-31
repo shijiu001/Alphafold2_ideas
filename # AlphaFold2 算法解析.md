@@ -12,9 +12,9 @@
 > 
 > 作者在学习相关文献*Highly accurate protein structure prediction with AlphaFold*及其补充材料后，根据作者对此模型的理解，总结成文。**必须强调的是，作者对人工智能以及蛋白结构领域的了解都较为浅薄，本文仅根据作者个人的理解总结成文，并不能保证内容的绝对正确，更不能用作学习Alphafold2模型的参考。**
 > 
-> 本文最重要的参考文献即为[*Highly accurate protein structure prediction with AlphaFold*](https://doi.org/10.1038/s41586-021-03819-2)。本文中若参考此文献则不再进行标注。
+> 本文最重要的参考文献即为[*Highly accurate protein structure prediction with AlphaFold*](https://doi.org/10.1038/s41586-021-03819-2)。本文中此参考文不再进行标注。
 > 
-> 本文的网页版详见此处[AlphaFold2 算法解析](https://github.com/shijiu001/Alphafold2_ideas/blob/main/%23%20AlphaFold2%20%E7%AE%97%E6%B3%95%E8%A7%A3%E6%9E%90.md)，可编辑版详见此处[RawMD](https://github.com/shijiu001/Alphafold2_ideas/blob/main/%23%20AlphaFold2%20%E7%AE%97%E6%B3%95%E8%A7%A3%E6%9E%90.md?raw=true)
+> 本文的网页版详见此处[AlphaFold2 算法解析](https://github.com/shijiu001/Alphafold2_ideas/blob/main/%23%20AlphaFold2%20%E7%AE%97%E6%B3%95%E8%A7%A3%E6%9E%90.md)，可编辑版详见此处[RawMD](https://github.com/shijiu001/Alphafold2_ideas/blob/main/%23%20AlphaFold2%20%E7%AE%97%E6%B3%95%E8%A7%A3%E6%9E%90.md?raw=true)。
 
 ---
 
@@ -136,7 +136,7 @@ Evoformer网络最终输出的MSA representation的第一行以及Pair represent
 
 Structure module对蛋白质结构的初始化被称为”黑洞初始化“（”black hole initialization“）,这种初始化方法将所有的氨基酸残基初始化在一点上（原点），并且都初始化为同一方向。值得注意的是，这一初始化是针对backbone而言的。
 
-> 所谓bockbone之预测结构中的骨架信息，也可以简单理解为由（氨基N-Cα-羧基C）构成的主链。backbone规定了每个氨基酸残基的位置及角度。
+> 所谓backbone之预测结构中的骨架信息，也可以简单理解为由（氨基N-Cα-羧基C）构成的主链。backbone规定了每个氨基酸残基的位置及角度。
 
 ![AF12](https://github.com/shijiu001/Alphafold2_ideas/blob/main/AF12.png?raw=true)
 <center style="font-size:14px;color:#C0C0C0;text-decoration:underline">SFig. 8</center> 
